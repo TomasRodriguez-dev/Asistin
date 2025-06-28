@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+    <div class="flex flex-col justify-center items-center h-full bg-card dark:bg-[#0F181F] transition-colors duration-500 px-4">
+        <div class="flex flex-row w-full h-full justify-end">
+            <app-dark-mode-toggle class="mt-4"></app-dark-mode-toggle>
+        </div>
+        <div class="bg-white dark:bg-[#20304A] text-black dark:text-white shadow-lg rounded-lg p-6 w-full h-full transition-colors duration-500">
+            <div class="flex flex-col items-center"> 
+                <span class="text-3xl font-semibold text-[#4B75E9] dark:text-white">Crear Cuenta</span>
+                <span class="text-base font-normal text-gray-400 dark:text-gray-300">Regístrate para crear una nueva cuenta</span>
+                <div class="w-full p-2">
+                    <!-- Email -->
+                    <div class="flex flex-row mt-4 rounded-md items-center border border-gray-300">
+                        <ion-icon name="mail" class="text-[#4B75E9] text-2xl mx-2"></ion-icon>
+                        <ion-input type="email" placeholder="Correo Electronico" class="dark:text-white"></ion-input>
+                    </div>
+                    <!-- Password -->
+                    <div class="flex flex-row mt-4 rounded-md items-center border border-gray-300">
+                        <ion-icon name="lock-open" class="text-[#4B75E9] text-2xl mx-2"></ion-icon>
+                        <ion-input type="password" placeholder="Contraseña" class="dark:text-white"></ion-input>
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="flex flex-row mt-4 rounded-md items-center border border-gray-300">
+                        <ion-icon name="lock-open" class="text-[#4B75E9] text-2xl mx-2"></ion-icon>
+                        <ion-input type="password" placeholder="Confirmar contraseña" class="dark:text-white"></ion-input>
+                    </div>
+                </div>
+                <div class="flex justify-center items-center w-full mt-6 flex-wrap">
+                    <ion-checkbox class="text-sm" labelPlacement="end">
+                        Acepto los 
+                        <span class="text-[#4B75E9]">Términos y Condiciones</span>
+                    </ion-checkbox>
+                </div>
+                <ion-button shape="round" class="mt-6 w-full normal-case btn-sign-in">
+                    <span class="text-base">Registrarse</span>
+                </ion-button>
+            </div>
+        </div>
+        <div class="flex justify-end items-end h-full">
+            <span class="text-lg text-[#141A21] dark:text-gray-300 mb-8">¿Ya tienes una cuenta? 
+                <span class="text-[#4B75E9] font-semibold dark:text-blue-400 cursor-pointer" (click)="navigateSignIn()">Iniciar Sesión</span>
+            </span>
+        </div>
+    </div>
+</ion-content>

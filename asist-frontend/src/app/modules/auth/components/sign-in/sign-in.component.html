@@ -1,0 +1,73 @@
+<ion-content [fullscreen]="true">
+  <div class="flex flex-col justify-center items-center h-full bg-card dark:bg-[#0F181F] transition-colors duration-500 px-4">
+    <div class="flex flex-row w-full h-full justify-end">
+      <app-dark-mode-toggle class="mt-4"></app-dark-mode-toggle>
+    </div>
+    <div class="bg-white dark:bg-[#20304A] text-black dark:text-white shadow-lg rounded-lg p-6 w-full h-full transition-colors duration-500">
+      <form [formGroup]="form" (ngSubmit)="iniciarSesion()">
+        <div class="flex flex-col items-center">
+          <span class="text-3xl font-semibold text-[#4B75E9] dark:text-white">¡Bienvenido de nuevo!</span>
+          <span class="text-base font-normal text-gray-400 dark:text-gray-300">Inicia sesión para continuar</span>
+          
+          <div class="w-full py-2"> 
+            <!-- EMAIL --> 
+            <div class="flex flex-col mt-4"> 
+              <div [ngClass]="{'border-red-500': form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)}" 
+                class="flex flex-row rounded-md items-center border border-gray-300"> 
+                <ion-icon name="mail" [ngClass]="{ 'text-red-500': form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty), 
+                'text-[#4B75E9]': !(form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) }" class="text-2xl mx-2" ></ion-icon>
+                <ion-input formControlName="email" type="email" placeholder="Correo Electrónico" class="dark:text-white" (ionBlur)="form.get('email')?.markAsTouched()" ></ion-input> 
+              </div> 
+              <div class="text-sm text-red-600 mt-1" *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)"> 
+                <span *ngIf="form.get('email')?.errors?.['required']">Este campo es obligatorio.</span> 
+                <span *ngIf="form.get('email')?.errors?.['email']">Ingrese un correo válido.</span> 
+              </div> 
+            </div> 
+            <!-- PASSWORD --> 
+            <div class="flex flex-col mt-4"> 
+              <div [ngClass]="{'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)}" 
+                class="flex flex-row rounded-md items-center border border-gray-300"> 
+                <ion-icon name="lock-open" [ngClass]="{ 'text-red-500': form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty), 
+                'text-[#4B75E9]': !(form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)) }" class="text-2xl mx-2" ></ion-icon>
+                <ion-input formControlName="password" type="password" placeholder="Contraseña" class="dark:text-white" (ionBlur)="form.get('password')?.markAsTouched()" ></ion-input> 
+              </div> 
+              <div class="text-sm text-red-600 mt-1" *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)"> 
+                <span *ngIf="form.get('password')?.errors?.['required']">Este campo es obligatorio.</span> 
+              </div> 
+            </div> 
+          </div>
+
+          <div class="flex justify-between items-center w-full mt-6 text-sm">
+            <ion-checkbox class="dark:text-white">Recuérdame</ion-checkbox>
+            <span class="text-[#4B75E9] italic dark:text-gray-300">¿Olvidaste tu contraseña?</span>
+          </div>
+
+          <ion-button type="submit" shape="round" class="mt-6 w-full normal-case btn-sign-in">
+            <span class="text-base">Iniciar Sesión</span>
+          </ion-button>
+
+          <span class="mt-4 font-normal text-lg text-gray-400 dark:text-gray-300">O</span>
+
+          <div class="flex flex-row gap-4 w-full">
+            <ion-button shape="round" class="w-full normal-case btn-facebook">
+              <ion-icon name="logo-facebook" slot="start" class="text-xl"></ion-icon>
+              <span class="text-base">Facebook</span>
+            </ion-button>
+            <ion-button shape="round" class="w-full normal-case btn-google">
+              <ion-icon name="logo-google" slot="start" class="text-xl"></ion-icon>
+              <span class="text-base">Google</span>
+            </ion-button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Register Link -->
+    <div class="flex justify-end items-end h-full">
+      <span class="text-lg text-[#141A21] dark:text-gray-300 mb-8">
+        ¿No tienes una cuenta?
+        <span class="text-[#4B75E9] font-semibold dark:text-blue-400 cursor-pointer" (click)="navigateSignUp()">Regístrate</span>
+      </span>
+    </div>
+  </div>
+</ion-content>

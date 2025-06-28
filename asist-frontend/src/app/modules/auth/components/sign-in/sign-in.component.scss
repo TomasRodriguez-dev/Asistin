@@ -1,0 +1,35 @@
+.btn-arrow {
+    --background: #FFF;
+    --color: #000;
+}
+
+.btn-sign-in {
+    --background: #4B75E9;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+}
+
+.btn-facebook {
+    --background: #3b5998; /* Color de fondo de Facebook */
+    --color: white; /* Color del texto */
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+}
+
+.btn-google {
+    --background: #db4437; /* Color de fondo de Google */
+    --color: white; /* Color del texto */
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+}
+
+ion-input {
+    --highlight-height: 0px !important; 
+    --border-width: 0px !important;
+}
+/* Also target the inner input */
+ion-input input {
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}

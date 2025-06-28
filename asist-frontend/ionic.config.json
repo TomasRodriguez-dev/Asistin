@@ -1,0 +1,7 @@
+{
+  "name": "asist-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
