@@ -65,6 +65,8 @@ export class AuthService {
         localStorage.clear();
         // Establecer el indicador de autenticación en falso
         this._authenticated = false;
+        // Redireccionar inicio
+        this.router.navigate(['/']);
         // Devolver el observable
         return of(true);
     }

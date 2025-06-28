@@ -1,4 +1,4 @@
-const $BASE_REST = "http://localhost:3000";
+const $BASE_REST = "https://asistin.onrender.com";
 
 export const environment = {
     production: false,

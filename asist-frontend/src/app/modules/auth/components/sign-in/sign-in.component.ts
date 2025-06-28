@@ -12,6 +12,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class SignInComponent implements OnInit {
     form!: FormGroup;
+    isLoading = false;
 
     constructor(
         private router: Router,
@@ -36,29 +37,31 @@ export class SignInComponent implements OnInit {
             this.form.markAllAsTouched();
             this.alertService.presentToast('Complete los campos requeridos(*)', 3000, 'danger', 'top');
             return;
-        } else {
-            let payload = null;
-            payload = {
-                email: this.form.get('email')?.value,
-                password: this.form.get('password')?.value
-            }
-
-            this._authService.signIn(payload).subscribe({
-                next: response => {
-                    this.alertService.presentToast(response.message, 3000, 'success', 'top', 'text-white');
-                    this.router.navigate(['/tabs/inicio']);
-                },
-                error: err => {
-                    this.form.markAllAsTouched();
-
-                    this.form.get('email')?.setErrors({ credentials: true });
-                    this.form.get('password')?.setErrors({ credentials: true });
-
-                    console.error(err);
-                    this.alertService.presentToast(err.error.message, 3000, 'danger', 'top');
-                }
-            })
         }
+
+        this.isLoading = true;  // Inicia el spinner
+
+        const payload = {
+            email: this.form.get('email')?.value,
+            password: this.form.get('password')?.value
+        };
+
+        this._authService.signIn(payload).subscribe({
+            next: response => {
+                this.alertService.presentToast(response.message, 3000, 'success', 'top', 'text-white');
+                this.router.navigate(['/tabs/inicio']);
+            },
+            error: err => {
+                this.form.markAllAsTouched();
+                this.form.get('email')?.setErrors({ credentials: true });
+                this.form.get('password')?.setErrors({ credentials: true });
+                console.error(err);
+                this.alertService.presentToast(err.error.message, 3000, 'danger', 'top');
+            },
+            complete: () => {
+                this.isLoading = false;  // Detiene el spinner al terminar
+            }
+        });
     }
 
     navigateSignUp(){

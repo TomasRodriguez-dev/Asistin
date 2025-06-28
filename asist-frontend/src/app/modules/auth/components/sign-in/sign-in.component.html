@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="flex flex-col justify-center items-center h-full bg-card dark:bg-[#0F181F] transition-colors duration-500 px-4">
     <div class="flex flex-row w-full h-full justify-end">
-      <app-dark-mode-toggle class="mt-4"></app-dark-mode-toggle>
+      <app-dark-mode-toggle class="mt-8"></app-dark-mode-toggle>
     </div>
     <div class="bg-white dark:bg-[#20304A] text-black dark:text-white shadow-lg rounded-lg p-6 w-full h-full transition-colors duration-500">
       <form [formGroup]="form" (ngSubmit)="iniciarSesion()">
@@ -42,8 +42,9 @@
             <span class="text-[#4B75E9] italic dark:text-gray-300">¿Olvidaste tu contraseña?</span>
           </div>
 
-          <ion-button type="submit" shape="round" class="mt-6 w-full normal-case btn-sign-in">
-            <span class="text-base">Iniciar Sesión</span>
+          <ion-button type="submit" shape="round" class="mt-6 w-full normal-case btn-sign-in" [disabled]="isLoading">
+            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+            <span class="text-base" *ngIf="!isLoading">Iniciar Sesión</span>
           </ion-button>
 
           <span class="mt-4 font-normal text-lg text-gray-400 dark:text-gray-300">O</span>
