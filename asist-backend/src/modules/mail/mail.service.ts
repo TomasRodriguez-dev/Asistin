@@ -21,7 +21,7 @@ export class MailService {
     }
 
     async sendVerificationEmail(email: string, verificationToken: string) {
-        const verificationUrl = `http://localhost:3000/auth/verificar?token=${verificationToken}`;
+        const verificationUrl = `https://asistin.onrender.com/auth/verificar?token=${verificationToken}`;
         const mailOptions = {
             from: '"No Reply" <no-reply@example.com>', 
             to: email,
@@ -34,7 +34,7 @@ export class MailService {
     }
 
     async sendRecoveryEmail(email: string, recoveryToken: string) {
-        const recoveryUrl = `http://localhost:3000/auth/reset-password?token=${recoveryToken}`;
+        const recoveryUrl = `https://asistin.onrender.com/auth/reset-password?token=${recoveryToken}`;
         const mailOptions = {
             from: '"No Reply" <no-reply@example.com>',
             to: email,
