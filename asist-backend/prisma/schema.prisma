@@ -14,9 +14,22 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String? 
-  isActive  Boolean
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String?
+  isActive    Boolean
+  firstName   String?   // Nombre
+  lastName    String?   // Apellido
+  avatarUrl   String?   // URL de la imagen de perfil
+  phoneNumber String?   // Teléfono
+  gender      Gender?   // Género usando enum
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt @default(now())
+}
+
+enum Gender {
+  Masculino
+  Femenino
+  Otro
+  NoEspecifica
 }
