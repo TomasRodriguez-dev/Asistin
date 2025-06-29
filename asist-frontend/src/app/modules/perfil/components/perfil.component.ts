@@ -26,7 +26,6 @@ export class PerfilComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.getUserPerfil();
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd)
             ).subscribe((event: NavigationEnd) => {
@@ -36,15 +35,11 @@ export class PerfilComponent implements OnInit {
         });
     }
 
-    ionViewWillEnter() {
-        this.getUserPerfil();
-    }
-
     getUserPerfil(){
         this.perfilService.getUserPerfil().subscribe({
             next: (resp) => {
                 this.userProfile = resp.result;
-                this.avatarUrl = (`${environment.baseRest}${this.userProfile.avatarUrl}`) || null;
+                this.avatarUrl = this.userProfile.avatarUrl || null;
             },
             error: (err) => {
                 console.error('Error al obtener el perfil:', err);

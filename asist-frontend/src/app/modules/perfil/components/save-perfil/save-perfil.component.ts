@@ -56,7 +56,7 @@ export class SavePerfilComponent {
         this.perfilService.getUserPerfil().subscribe({
             next: (resp) => {
                 this.userProfile = resp.result;
-                this.avatarUrl = (`${environment.baseRest}${this.userProfile.avatarUrl}`) || null;
+                this.avatarUrl = this.userProfile.avatarUrl || null;
                 this.form.patchValue({
                     nombre: this.userProfile.firstName,
                     apellido: this.userProfile.lastName,
@@ -90,7 +90,7 @@ export class SavePerfilComponent {
         this.uploader?.openImageSourceSelector();
     }
 
-    onAvatarCaptured(blob: Blob) {
+    async onAvatarCaptured(blob: Blob) {
         if (blob.size > 5 * 1024 * 1024) {
             this.alertService.presentToast('La imagen supera el límite de 5MB', 3000, 'danger', 'top', 'text-white');
             return;
@@ -103,21 +103,22 @@ export class SavePerfilComponent {
 
         this.isUploadLoading = true;
 
-        const formData = new FormData();
-        formData.append('avatar', blob, 'avatar.jpg');
+        try {
+            const userId = this.userProfile.id;
+            const file = new File([blob], `avatar_${Date.now()}.jpg`, { type: blob.type });
 
-        this.perfilService.avatarUserPerfil(formData).subscribe({
-            next: () => {
-                this.isUploadLoading = false;
-                this.alertService.presentToast('Avatar actualizado correctamente', 3000, 'success', 'top', 'text-white');
-                this.getUserPerfil();
-            },
-            error: (err) => {
-                this.isUploadLoading = false;
-                console.error('Error al actualizar el avatar:', err);
-                this.alertService.presentToast(err.error.message || 'Error al actualizar el avatar', 3000, 'danger', 'top' , 'text-white');
-            }
-        });
+            const firebaseUrl = await this.perfilService.subirAvatar(file, userId);
+
+            await this.perfilService.avatarUserPerfil(firebaseUrl).toPromise();
+
+            this.alertService.presentToast('Avatar actualizado correctamente', 3000, 'success', 'top', 'text-white');
+            this.getUserPerfil();
+        } catch (err: any) {
+            console.error('Error al actualizar avatar:', err);
+            this.alertService.presentToast(err?.error?.message || 'Error al actualizar el avatar', 3000, 'danger', 'top', 'text-white');
+        } finally {
+            this.isUploadLoading = false;
+        }
     }
 
     onSubmit(){
