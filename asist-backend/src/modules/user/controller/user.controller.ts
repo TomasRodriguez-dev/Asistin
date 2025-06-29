@@ -35,54 +35,27 @@ export class UserController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post('avatar')
-    @ApiOperation({ summary: 'Subir nuevo avatar del usuario' })
-    @ApiConsumes('multipart/form-data')
-    @ApiBody({
-    schema: {
-        type: 'object',
-        properties: {
-        avatar: {
-            type: 'string',
-            format: 'binary',
-            description: 'Imagen en formato jpg/jpeg/png (máx. 5MB)',
-        },
-        },
-        required: ['avatar'],
-    },
-    })
+    @Patch('avatar-url')
+    @ApiOperation({ summary: 'Actualizar avatar del usuario (URL desde Firebase)' })
     @ApiResponse({ status: 200, description: 'Avatar actualizado exitosamente' })
-    @ApiResponse({ status: 400, description: 'Archivo inválido' })
-    @ApiResponse({ status: 401, description: 'No autorizado' })
-    @UseInterceptors(
-        FileInterceptor('avatar', {
-            storage: diskStorage({
-            destination: './uploads/avatars',
-            filename: (req, file, cb) => {
-                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-                const ext = extname(file.originalname);
-                cb(null, `avatar-${req.user}-${uniqueSuffix}${ext}`);
-            },
-            }),
-            limits: { fileSize: 5 * 1024 * 1024 },
-            fileFilter: (req, file, cb) => {
-            if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
-                cb(new BadRequestException('Solo imágenes jpg/jpeg/png permitidas'), false);
-            } else {
-                cb(null, true);
-            }
-            },
-        }),
-    )
-    async uploadAvatar(@UploadedFile() file: Express.Multer.File, @Req() req) {
-        if (!file) {
-            throw new BadRequestException('Archivo no proporcionado');
+    @ApiResponse({ status: 400, description: 'URL inválida' })
+    async updateAvatarUrl(@Req() req, @Body() body: { url: string }) {
+        const { url } = body;
+
+        // Validar que venga una URL y sea de Firebase
+        if (!url || !url.startsWith('https://firebasestorage.googleapis.com/v0/b/asistin-a492d.appspot.com/o/')) {
+            throw new BadRequestException('URL inválida o no es de Firebase Storage');
         }
 
-        const avatarUrl = `/uploads/avatars/${file.filename}`;
-        await this.userService.updateAvatar(req.user.userId, avatarUrl);
+        // Se Valida que contenga el ID del usuario
+        const userId = req.user.userId;
+        if (!url.includes(`avatars/${userId}`)) {
+            throw new BadRequestException('La URL no parece pertenecer a este usuario');
+        }
 
-        return { message: 'Avatar actualizado', avatarUrl };
+        await this.userService.updateAvatar(userId, url);
+
+        return { message: 'Avatar actualizado', avatarUrl: url };
     }
 
 }
