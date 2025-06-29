@@ -1,4 +1,4 @@
-import { IsOptional, IsPhoneNumber, IsUrl, IsString } from 'class-validator';
+import { IsOptional, IsUrl, IsString, Matches } from 'class-validator';
 
 export class UpdateProfileDto {
     @IsOptional()
@@ -14,7 +14,9 @@ export class UpdateProfileDto {
     avatarUrl?: string;
 
     @IsOptional()
-    @IsPhoneNumber()
+    @Matches(/^\d{7,15}$/, {
+        message: 'El número de teléfono debe contener entre 7 y 15 dígitos numéricos',
+    })
     phoneNumber?: string;
 
     @IsOptional()
