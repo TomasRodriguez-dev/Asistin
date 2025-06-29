@@ -43,13 +43,21 @@ export class UserController {
         const { url } = body;
 
         // Validar que venga una URL y sea de Firebase
-        if (!url || !url.startsWith('https://firebasestorage.googleapis.com/v0/b/asistin-a492d.appspot.com/o/')) {
+        if (!url || !url.startsWith('https://firebasestorage.googleapis.com/v0/b/asistin-a492d.firebasestorage.app/o/')) {
             throw new BadRequestException('URL inválida o no es de Firebase Storage');
         }
 
-        // Se Valida que contenga el ID del usuario
         const userId = req.user.userId;
-        if (!url.includes(`avatars/${userId}`)) {
+
+        const objectPathEncoded = url.split('/o/')[1]?.split('?')[0]; 
+
+        if (!objectPathEncoded) {
+            throw new BadRequestException('No se pudo extraer el path del archivo');
+        }
+
+        const objectPath = decodeURIComponent(objectPathEncoded); 
+
+        if (!objectPath.includes(`avatars/${userId}/`)) {
             throw new BadRequestException('La URL no parece pertenecer a este usuario');
         }
 
