@@ -45,7 +45,7 @@ export class UserController {
         avatar: {
             type: 'string',
             format: 'binary',
-            description: 'Imagen en formato jpg/jpeg/png (máx. 1MB)',
+            description: 'Imagen en formato jpg/jpeg/png (máx. 5MB)',
         },
         },
         required: ['avatar'],
@@ -64,7 +64,7 @@ export class UserController {
                 cb(null, `avatar-${req.user}-${uniqueSuffix}${ext}`);
             },
             }),
-            limits: { fileSize: 1 * 1024 * 1024 },
+            limits: { fileSize: 5 * 1024 * 1024 },
             fileFilter: (req, file, cb) => {
             if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
                 cb(new BadRequestException('Solo imágenes jpg/jpeg/png permitidas'), false);
