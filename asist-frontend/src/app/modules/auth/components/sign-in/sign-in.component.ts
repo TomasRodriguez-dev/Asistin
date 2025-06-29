@@ -39,7 +39,7 @@ export class SignInComponent implements OnInit {
             return;
         }
 
-        this.isLoading = true;  // Inicia el spinner
+        this.isLoading = true;  
 
         const payload = {
             email: this.form.get('email')?.value,
@@ -56,10 +56,11 @@ export class SignInComponent implements OnInit {
                 this.form.get('email')?.setErrors({ credentials: true });
                 this.form.get('password')?.setErrors({ credentials: true });
                 console.error(err);
+                this.isLoading = false;
                 this.alertService.presentToast(err.error.message, 3000, 'danger', 'top');
             },
             complete: () => {
-                this.isLoading = false;  // Detiene el spinner al terminar
+                this.isLoading = false;
             }
         });
     }

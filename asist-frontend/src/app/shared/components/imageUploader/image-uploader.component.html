@@ -1,0 +1,17 @@
+<div class="w-32 h-32 rounded-full border border-gray-300 overflow-hidden mb-2">
+    <img *ngIf="imageUrl; else placeholder" [src]="imageUrl" class="w-full h-full object-cover" />
+    <ng-template #placeholder>
+        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+            Sin imagen
+        </div>
+    </ng-template>
+</div>
+
+<div class="flex space-x-2">
+    <button (click)="takePhoto()" class="px-4 py-2 bg-blue-600 text-white rounded">
+        Tomar foto
+    </button>
+    <button (click)="chooseFromGallery()" class="px-4 py-2 bg-green-600 text-white rounded">
+        Elegir de galería
+    </button>
+</div>
