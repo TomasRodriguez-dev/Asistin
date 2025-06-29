@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ProfileResponseDto {
     @ApiProperty()
@@ -7,20 +7,23 @@ export class ProfileResponseDto {
     @ApiProperty()
     email: string;
 
-    @ApiProperty({ required: false })
+    @ApiPropertyOptional()
     firstName?: string;
 
-    @ApiProperty({ required: false })
+    @ApiPropertyOptional()
     lastName?: string;
 
-    @ApiProperty({ required: false })
+    @ApiPropertyOptional()
     avatarUrl?: string;
 
-    @ApiProperty({ required: false })
+    @ApiPropertyOptional()
     phoneNumber?: string;
 
-    @ApiProperty({ required: false })
-    gender?: string;
+    @ApiPropertyOptional({
+        description: 'ID del género (clave foránea a Gender)',
+        example: 1,
+    })
+    idgender?: number; 
 
     @ApiProperty()
     createdAt: Date;

@@ -1,5 +1,4 @@
-import { IsOptional, IsString, IsEnum, IsUrl, IsPhoneNumber } from 'class-validator';
-import { Gender } from '../enums/gender.enum';  
+import { IsOptional, IsPhoneNumber, IsUrl, IsString } from 'class-validator';
 
 export class UpdateProfileDto {
     @IsOptional()
@@ -15,10 +14,9 @@ export class UpdateProfileDto {
     avatarUrl?: string;
 
     @IsOptional()
-    @IsPhoneNumber() 
+    @IsPhoneNumber()
     phoneNumber?: string;
 
     @IsOptional()
-    @IsEnum(Gender, { message: 'El género debe ser uno de: Masculino, Femenino, Otro, NoEspecifica' })
-    gender?: Gender;
+    idgender?: number;  
 }

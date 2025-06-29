@@ -18,18 +18,20 @@ model User {
   email       String    @unique
   password    String?
   isActive    Boolean
-  firstName   String?   // Nombre
-  lastName    String?   // Apellido
-  avatarUrl   String?   // URL de la imagen de perfil
-  phoneNumber String?   // Teléfono
-  gender      Gender?   // Género usando enum
+  firstName   String?
+  lastName    String?
+  avatarUrl   String?
+  phoneNumber String?
+
+  idgender    Int?   
+  gender      Gender?    @relation(fields: [idgender], references: [id])
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt @default(now())
 }
 
-enum Gender {
-  Masculino
-  Femenino
-  Otro
-  NoEspecifica
+model Gender {
+  id          Int      @id @default(autoincrement())
+  descripcion String
+  users       User[]
 }
