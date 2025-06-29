@@ -1,0 +1,44 @@
+ion-input {
+    --highlight-height: 0px !important; 
+    --border-width: 0px !important;
+}
+ion-input input {
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+ion-select {
+    --highlight-height: 0px !important;
+    --border-width: 0px !important;
+    --padding-start: 0px !important;
+    --padding-end: 0px !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+ion-select::part(icon) {
+    display: none;
+}
+
+
+.btn {
+    --background: #4B75E9;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+}
+
+.btn-back {
+    --background: #4B75E9;
+}
+
+ion-modal#modal-editar {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}

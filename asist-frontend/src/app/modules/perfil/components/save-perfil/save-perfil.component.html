@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">
+    <div class="flex flex-col min-w-full justify-center items-center h-full bg-card dark:bg-[#0F181F] transition-colors duration-500 px-4 overflow-y-auto">
+        <div class="flex flex-row w-full h-12 my-4 justify-end">
+            <app-dark-mode-toggle class="mt-6"></app-dark-mode-toggle>
+        </div>
+        <div class="flex flex-col h-full w-full">
+            <div class="flex flex-col w-full justify-center" *ngIf="userProfile; else skeletonPerfil">
+                <div class="relative flex items-center justify-center mb-4">
+                    <ion-button class="absolute left-0 btn-back" (click)="goBack()">
+                        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+                    </ion-button>
+                    <span class="font-semibold text-2xl text-center dark:text-white">Editar Perfil</span>
+                </div>
+
+                <div class="flex items-center justify-center">
+                    <div class="relative w-36 h-36 rounded-full border-2 border-[#CACECD] flex items-center justify-center">
+                        <img [src]="avatarUrl || 'assets/avatar/animal_14421380.png'" alt="Avatar" class="w-32 h-32 rounded-full" />
+
+                        <!-- Spinner overlay -->
+                        <div *ngIf="isUploadLoading" class="absolute inset-0 bg-white bg-opacity-60 rounded-full flex items-center justify-center z-10">
+                            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-10 w-10"></div>
+                        </div>
+
+                        <div *ngIf="!isUploadLoading" class="absolute bottom-1 right-1 bg-[#4B75E9] rounded-full h-8 w-8 shadow-lg cursor-pointer active:scale-95 transition duration-150 ease-in-out flex items-center justify-center" (click)="onEditarAvatar()">
+                            <ion-icon name="pencil" class="text-base text-white"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #skeletonPerfil>
+                <div class="flex flex-col w-full justify-center animate-pulse">
+                    <div class="h-8 w-24 bg-gray-300 dark:bg-gray-700 rounded mb-4 mx-auto"></div>
+                    <div class="flex justify-center mb-4">
+                        <div class="w-36 h-36 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                    </div>
+                </div>
+            </ng-template>
+            <form class="mb-4" [formGroup]="form" *ngIf="userProfile; else skeletonFormulario">
+                <div class="flex flex-col mt-4 gap-6"> 
+                    <div class="flex flex-row gap-4">
+                        <!-- Nombre -->
+                        <div class="flex flex-col w-full">
+                            <span class="font-semibold mb-2 dark:text-white">Nombre</span>
+                            <div class="flex flex-row rounded-md items-center border border-gray-300"> 
+                                <ion-input formControlName="nombre" type="text" placeholder="Ingrese Nombre" class="ml-2 dark:text-white"></ion-input> 
+                            </div>
+                        </div>
+                        <!-- Apellido -->
+                        <div class="flex flex-col w-full">
+                            <span class="font-semibold mb-2 dark:text-white">Apellido</span>
+                            <div class="flex flex-row rounded-md items-center border border-gray-300"> 
+                                <ion-input formControlName="apellido" type="text" placeholder="Ingrese Apellido" class="ml-2 dark:text-white"></ion-input> 
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Genero -->
+                    <div class="flex flex-col w-full">
+                        <span class="font-semibold mb-2 dark:text-white">Género</span>
+                        <div class="flex flex-row rounded-md items-center border border-gray-300"> 
+                            <ion-select (click)="isSelectOpen = true" (ionDismiss)="onSelectClose()"
+                                formControlName="genero" interface="popover" placeholder="Seleccione Género" class="ml-2 dark:text-white">
+                                <ion-select-option *ngFor="let genero of generos" [value]="genero.id">
+                                    {{ genero.descripcion }}
+                                </ion-select-option>
+                            </ion-select>
+                            <ion-icon name="chevron-down-outline"
+                                [ngClass]="{
+                                    'transform rotate-180 transition-transform duration-300': isSelectOpen,
+                                    'transform rotate-0 transition-transform duration-300': !isSelectOpen
+                                }"
+                                class="ml-auto mr-2 pointer-events-none text-gray-500"
+                            ></ion-icon>
+                        </div>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="flex flex-col w-full">
+                        <span class="font-semibold mb-2 dark:text-white">Teléfono</span>
+                        <div class="flex flex-row rounded-md items-center border border-gray-300"> 
+                            <ion-input formControlName="telefono" type="number" placeholder="Ingrese Teléfono" class="ml-2 dark:text-white"></ion-input> 
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex flex-col w-full">
+                        <span class="font-semibold mb-2 dark:text-white">Correo Electrónico</span>
+                        <div class="flex flex-row rounded-md items-center border border-gray-300"> 
+                            <ion-input formControlName="email" type="email" placeholder="Ingrese Correo Electrónico" class="ml-2 dark:text-white"></ion-input> 
+                        </div>
+                    </div>
+                </div> 
+            </form>
+            <ng-template #skeletonFormulario>
+                <div class="flex flex-col w-full mt-4 gap-6 animate-pulse">
+                    <div class="flex flex-row gap-4">
+                        <div class="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                        <div class="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                    </div>
+                    <div class="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                    <div class="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                    <div class="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                </div>
+            </ng-template>
+            <div class="mt-auto mb-6">
+                <ion-button class="w-full normal-case btn rounded-full"  (click)="abrirModal()">
+                    <p class="text-md text-white ml-2" expand="block">Editar</p>
+                </ion-button>
+            </div>
+        </div>
+    </div>
+    <ion-modal id="modal-editar" class="px-4" #modal>
+        <ng-template>
+            <div class="flex flex-col p-8 bg-card dark:bg-[#0F181F]">
+                <span class="font-semibold text-lg text-center text-[#4B75E9] dark:text-white">¿Está seguro de editar sus datos?</span>
+                <div class="mt-6 flex flex-row gap-4">
+                    <ion-button class="w-full normal-case" color="danger" (click)="cerrarModal()">
+                        <span class="text-base">Cancelar</span>
+                    </ion-button>
+                    <ion-button class="w-full normal-case" color="primary" (click)="onSubmit()">
+                        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+                        <span *ngIf="!isLoading" class="text-base">Confirmar</span>
+                    </ion-button>
+                </div>
+            </div>
+        </ng-template>
+    </ion-modal>
+    <app-image-uploader #uploader (imageCaptured)="onAvatarCaptured($event)"></app-image-uploader>
+</ion-content>

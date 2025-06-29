@@ -14,9 +14,24 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String? 
-  isActive  Boolean
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String?
+  isActive    Boolean
+  firstName   String?
+  lastName    String?
+  avatarUrl   String?
+  phoneNumber String?
+
+  idgender    Int?   
+  gender      Gender?    @relation(fields: [idgender], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt @default(now())
+}
+
+model Gender {
+  id          Int      @id @default(autoincrement())
+  descripcion String
+  users       User[]
 }

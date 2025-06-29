@@ -12,37 +12,30 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let finalMessage = 'Error interno del servidor';
 
-    const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : 'Error interno del servidor';
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
 
-    let finalMessage = 'Ha ocurrido un error';
-
-    if (typeof message === 'string') {
-      finalMessage = message;
-    } else if (typeof message === 'object' && (message as any).message) {
-      finalMessage = Array.isArray((message as any).message)
-        ? (message as any).message[0]
-        : (message as any).message;
+      if (typeof res === 'string') {
+        finalMessage = res;
+      } else if (typeof res === 'object' && (res as any).message) {
+        finalMessage = Array.isArray((res as any).message)
+          ? (res as any).message[0]
+          : (res as any).message;
+      }
+    } else {
+      console.error('Unhandled error:', exception);
     }
 
-    const errorResponse: any = {
+    const errorResponse = {
       success: false,
+      statusCode: status,
       message: finalMessage,
     };
-
-    // Solo incluye "result" si realmente hay contenido útil
-    if ((message as any)?.result) {
-      errorResponse.result = (message as any).result;
-    }
 
     response.status(status).json(errorResponse);
   }

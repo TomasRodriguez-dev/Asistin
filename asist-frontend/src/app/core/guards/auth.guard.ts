@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
                 if (authenticated) {
                     return of(true); // Se permite el acceso
                 } else {
-                    this.router.navigate(['/splash-screen']); // Redirigir a la página de inicio de sesión
+                    this.router.navigate(['/']); // Redirigir a la página de inicio de sesión
                     return of(false); // Se denega el acceso
                 }
             })

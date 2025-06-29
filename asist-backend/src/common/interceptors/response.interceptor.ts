@@ -7,18 +7,22 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data: any) => {
-        const { message, token, ...rest } = data ?? {};
         const response: any = {
           success: true,
-          message: message ?? 'Operación exitosa',
+          message: data?.message ?? 'Operación exitosa',
         };
 
-        if (token !== undefined) {
-          response.token = token;
+        if ('token' in data) {
+          response.token = data.token;
         }
 
-        if (Object.keys(rest).length > 0) {
-          response.result = rest;
+        if (Array.isArray(data)) {
+          response.result = data;
+        } else if (typeof data === 'object' && data !== null) {
+          const { message, token, ...rest } = data;
+          if (Object.keys(rest).length > 0) {
+            response.result = rest;
+          }
         }
 
         return response;
