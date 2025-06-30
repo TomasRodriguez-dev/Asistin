@@ -24,14 +24,120 @@ model User {
   phoneNumber String?
 
   idgender    Int?   
-  gender      Gender?    @relation(fields: [idgender], references: [id])
+  gender      Gender?  @relation(fields: [idgender], references: [id])
+
+  idrole Int?   
+  role   Role?  @relation(fields: [idrole], references: [id])
+
+  // Relaciones
+  attendances     Attendance[]
+  subjectStudents SubjectStudent[]
+  subjectProfessors SubjectProfessor[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt @default(now())
+}
+
+/// Rol de usuario: admin, profesor o alumno.
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
 }
 
 model Gender {
   id          Int      @id @default(autoincrement())
   descripcion String
   users       User[]
+}
+
+/// Materia o asignatura dictada en el sistema.
+model Subject {
+  id          Int                 @id @default(autoincrement())
+  name        String
+  description String?
+
+  schedules   ClassSchedule[]
+  professors  SubjectProfessor[]
+  students    SubjectStudent[]
+  attendances Attendance[]
+}
+
+/// Horario de cursada de una materia en un día específico.
+model ClassSchedule {
+  id         Int      @id @default(autoincrement())
+  dayOfWeek  Int      /// 0 (domingo) - 6 (sábado)
+  startTime  String   /// Ej: "08:00"
+  endTime    String   /// Ej: "09:30"
+
+  idsubject  Int
+  subject    Subject  @relation(fields: [idsubject], references: [id])
+
+  idlocation Int
+  location   ValidLocation @relation(fields: [idlocation], references: [id])
+}
+
+/// Ubicación geográfica válida para marcar asistencia.
+model ValidLocation {
+  id        Int      @id @default(autoincrement())
+  name      String
+  latitude  Float
+  longitude Float
+  radius    Float    /// En metros
+
+  schedules ClassSchedule[]
+}
+
+/// Asignación de profesores a materias.
+model SubjectProfessor {
+  id         Int    @id @default(autoincrement())
+
+  idsubject  Int
+  subject    Subject @relation(fields: [idsubject], references: [id])
+
+  idprofessor Int
+  professor   User   @relation(fields: [idprofessor], references: [id])
+
+  @@unique([idsubject, idprofessor])
+}
+
+/// Asignación de alumnos a materias.
+model SubjectStudent {
+  id         Int    @id @default(autoincrement())
+
+  idsubject  Int
+  subject    Subject @relation(fields: [idsubject], references: [id])
+
+  idstudent  Int
+  student    User    @relation(fields: [idstudent], references: [id])
+
+  @@unique([idsubject, idstudent])
+}
+
+/// Registro de asistencia de un alumno en una clase específica.
+model Attendance {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  time        String   /// Hora exacta del registro
+  type        String   /// 'entrada' o 'salida'
+
+  latitude    Float
+  longitude   Float
+  photoUrl    String
+
+  inRange     Boolean   /// Si estuvo dentro del rango válido
+  inTime      Boolean   /// Si fue dentro del horario válido
+
+  observation String?
+  exitObservation   String?
+
+  iduser      Int
+  user        User      @relation(fields: [iduser], references: [id])
+
+  idsubject   Int
+  subject     Subject   @relation(fields: [idsubject], references: [id])
+
+  createdAt   DateTime  @default(now())
+
+  @@unique([iduser, idsubject, date, type])
 }

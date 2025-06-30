@@ -32,7 +32,7 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException('Credenciales inválidas.');
         }
-        const payload = { email: user.email, sub: user.id };
+        const payload = { email: user.email, sub: user.id, idrole: user.idrole };
         return {
             message: 'Inicio de sesión completado con éxito.',
             token: this.jwtService.sign(payload),
@@ -51,10 +51,11 @@ export class AuthService {
                 email: registerDto.email,
                 password: hashedPassword,
                 isActive: false,
+                idrole: 3 // Rol Alumno por defecto
             },
         });
 
-        const verificationToken = this.jwtService.sign({ email: user.email, id: user.id });
+        const verificationToken = this.jwtService.sign({ email: user.email, id: user.id, idrole: user.idrole });
 
         await this.mailService.sendVerificationEmail(user.email, verificationToken);
 
