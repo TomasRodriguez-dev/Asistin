@@ -14,13 +14,12 @@ export class AttendanceController {
     constructor(private readonly service: AttendanceService) {}
 
     @Post()
-    @Roles(3) // Solo alumno puede marcar asistencia
+    @Roles(3)
     @ApiOperation({ summary: 'Registrar asistencia' })
     async create(@Body() dto: CreateAttendanceDto, @Request() req) {
-        if (dto.iduser !== req.user.userId) {
-        throw new UnauthorizedException('No puedes registrar asistencia para otro usuario.');
-        }
-        return this.service.create(dto);
+        const userId = req.user.userId;
+
+        return this.service.create(dto, userId);
     }
 
     @Get('history')
