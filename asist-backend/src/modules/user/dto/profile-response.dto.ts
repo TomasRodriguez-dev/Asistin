@@ -4,6 +4,12 @@ export class ProfileResponseDto {
     @ApiProperty()
     id: number;
 
+    @ApiPropertyOptional({
+        description: 'ID del rol del usuario (clave foránea a Role)',
+        example: 3,
+    })
+    idrole?: number;
+
     @ApiProperty()
     email: string;
 

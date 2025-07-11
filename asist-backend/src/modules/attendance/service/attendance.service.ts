@@ -124,15 +124,15 @@ export class AttendanceService {
         return 'Ausente';
     }
 
-    async create(dto: CreateAttendanceDto) {
+    async create(dto: CreateAttendanceDto, userId: number) {
         let inRange = false;
         let inTime = false;
         let observation: string | null = null;
         let exitObservation: string | null = null;
 
         // Validaciones comunes
-        await this.validateSubjectAssignment(dto.iduser, dto.idsubject);
-        await this.validateDuplicate(dto.iduser, dto.idsubject, dto.date, dto.type);
+        await this.validateSubjectAssignment(userId, dto.idsubject);
+        await this.validateDuplicate(userId, dto.idsubject, dto.date, dto.type);
 
         if (dto.type === 'entrada') {
             inRange = await this.checkLocationInRange(dto.latitude, dto.longitude, dto.idsubject);
@@ -191,7 +191,7 @@ export class AttendanceService {
                 photoUrl: dto.photoUrl,
                 inRange,
                 inTime,
-                iduser: dto.iduser,
+                iduser: userId,
                 idsubject: dto.idsubject,
                 observation,
                 exitObservation,

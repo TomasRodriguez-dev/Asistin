@@ -26,10 +26,6 @@ export class CreateAttendanceDto {
     @IsUrl()
     photoUrl: string;
 
-    @ApiProperty({ example: 1, description: 'ID del usuario (alumno)' })
-    @IsInt()
-    iduser: number;
-
     @ApiProperty({ example: 1, description: 'ID de la materia' })
     @IsInt()
     idsubject: number;

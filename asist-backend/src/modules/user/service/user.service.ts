@@ -12,6 +12,7 @@ export class UserService {
             where: { id: userId },
             select: {
             id: true,
+            idrole: true,
             email: true,
             firstName: true,
             lastName: true,
@@ -30,6 +31,7 @@ export class UserService {
         // Mapear null a undefined
         return {
             id: user.id,
+            idrole: user.idrole ?? undefined,
             email: user.email,
             firstName: user.firstName ?? undefined,
             lastName: user.lastName ?? undefined,
