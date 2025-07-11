@@ -1,11 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HomeService } from '../services/home.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
 
 interface Materia {
-    idMateria: number;
-    nombre: string;
-    horario: string;
-    curso: string;
+    "id": number;
+    "dayOfWeek": number;
+    "startTime": string;
+    "endTime": string;
+    "idsubject": number;
+    "idlocation": number;
+    "subject": {
+        "id": number,
+        "name": string,
+        "description": string,
+    }
+}
+
+interface User {
+    "id": number | null,
+    "email": string | null,
+    "firstName": string | null,
+    "lastName": string | null,
+    "avatarUrl": string | null,
+    "phoneNumber": string | null,
+    "idgender": number | null,
+    "createdAt": string | null,
+    "updatedAt": string | null
 }
 
 @Component({
@@ -14,14 +35,50 @@ interface Materia {
     styleUrls: ['./home.component.scss'],
     standalone: false
 })
-export class HomeComponent {
-    materias: Materia[] = [
-        { idMateria: 1, nombre: "Biología", horario: "10:00 - 11:00", curso: "3ro 1ra" },
-        { idMateria: 2, nombre: "Matemática", horario: "11:00 - 12:00", curso: "3ro 1ra" },
-        { idMateria: 3, nombre: "Ciencias Sociales", horario: "12:00 - 13:00", curso: "3ro 1ra" },
-        { idMateria: 4, nombre: "Dibujo Técnico", horario: "13:00 - 14:00", curso: "3ro 1ra" },
-    ]
-    constructor(private router: Router) { }
+export class HomeComponent implements OnInit {
+    materias: Materia[] = [];
+    showSpinner: boolean = true;
+    loggedUser: User = {
+        "id": null,
+        "email": null,
+        "firstName": null,
+        "lastName": null,
+        "avatarUrl": null,
+        "phoneNumber": null,
+        "idgender": null,
+        "createdAt": null,
+        "updatedAt": null
+    };
+    constructor(private router: Router, private homeService: HomeService, private alert: AlertService) { }
+
+    ngOnInit(): void {
+        this.getMaterias();
+        this.getLoggedUser();
+
+    }
+
+    getLoggedUser() {
+        this.homeService.getLoggedUser().subscribe({
+            next: (res: any) => {
+                if(res.success == true){
+                    this.loggedUser = res.result;
+                } else {
+                    this.alert.presentToast('Ocurrió un error al obtener el usuario logueado', 3000, 'danger', 'top')
+                }
+            }
+        })
+    }
+
+    getMaterias() {
+        this.homeService.getMaterias().subscribe({
+            next: (res: any) => {
+                if (res.success == true) {
+                    this.materias = res.result;
+                    this.showSpinner = false;
+                }
+            }
+        })
+    }
 
     verMateria(idMateria: number) {
         console.log("idMateria:", idMateria)

@@ -22,5 +22,10 @@ export const environment = {
     },
     select: {
       generos: `${$BASE_REST}/select/genders`
+    },
+    materias: {
+      materias_alumnos: `${$BASE_REST}/class-schedule/student`,
+      valid_locations: `${$BASE_REST}/valid-locations`, 
+      attendance: `${$BASE_REST}/attendance`
     }
 }

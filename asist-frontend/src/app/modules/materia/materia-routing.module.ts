@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MateriaComponent } from './materia.component';
+import { MateriaComponent } from './components/materia.component';
 
 const routes: Routes = [
     {

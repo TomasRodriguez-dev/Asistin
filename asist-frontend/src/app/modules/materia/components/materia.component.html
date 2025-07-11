@@ -1,0 +1,42 @@
+<div *ngIf="showSpinner">
+
+</div>
+<div *ngIf="!showSpinner"
+  class="flex flex-col w-full h-full bg-[#f0f0f0] dark:bg-[#0f181f] overflow-y-auto gap-3 text-gray-900">
+  <div class="w-full h-[10%] flex justify-center items-center py-3 bg-[#4a74e8]">
+    <span class="font-bold text-lg text-white">Registrar Asistencias</span>
+  </div>
+  <div class="w-full p-2">
+    <span class="text-md font-semibold">Materia Seleccionada: "ID"{{idMateria}}</span>
+  </div>
+  <!-- Vista para profesores -->
+  <div *ngIf="usuarioLogueado?.idrole == 2" class="w-full flex justify-center items-center">
+    <span class="font-medium">Listado de Asistencias:</span>
+  </div>
+  <div *ngIf="usuarioLogueado?.idrole == 2" class="flex-1 flex flex-col overflow-y-auto gap-3">
+    <div *ngFor="let asistenciaAlumno of asistenciasAlumnos"
+      class="rounded-md flex flex-col p-2 justify-center bg-white border border-1 border-gray-400 drop-shadow-md">
+      <span class="font-semibold text-gray-900">{{asistenciaAlumno.alumno}}</span>
+      <span class="font-semibold text-gray-900">{{asistenciaAlumno.estado}}</span>
+    </div>
+  </div>
+  <!-- Visita para alumnos -->
+  <div *ngIf="usuarioLogueado?.idrole == 3" class="flex flex-col items-center w-full h-[85%]">
+    <div class="w-full h-[90%] flex justify-center">
+      <div
+        class="w-[200px] h-[200px] rounded-md border border-2 border-[#4B75E9] flex flex-col justify-center items-center overflow-hidden">
+        <img *ngIf="base64Image != ''" [src]="base64Image? base64Image : ''" alt="">
+        <ion-button *ngIf="base64Image == ''" class="w-1/5 h-1/5 flex btn-asistencia" (click)="takePicture()">
+          <ion-icon slot="icon-only" name="camera"></ion-icon>
+        </ion-button>
+        <span class="font-semibold">Tomar Foto</span>
+      </div>
+    </div>
+  </div>
+  <div class="w-full h-[15%] flex justify-center pb-2 px-2">
+    <ion-button class="w-full flex btn-asistencia" (click)="marcarPresente()">
+      <ion-icon name="hand-left-outline" class="mr-2"></ion-icon>
+      <span class="font-semibold">Presente</span>
+    </ion-button>
+  </div>
+</div>

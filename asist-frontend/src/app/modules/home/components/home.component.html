@@ -1,18 +1,27 @@
-<div class="flex flex-col w-full h-full bg-[#f0f0f0] dark:bg-[#0f181f] overflow-y-auto px-3 gap-3">
-    <div class="w-full flex justify-center items-center pt-3">
-        <span class="font-bold text-lg text-gray-900">Registrar Asistencias</span>
+<div *ngIf="showSpinner" class="flex flex-col w-full h-full bg-[#f0f0f0] dark:bg-[#0f181f] overflow-y-auto px-3 gap-3">
+
+</div>
+<div *ngIf="!showSpinner" class="flex flex-col w-full h-full bg-[#f0f0f0] dark:bg-[#0f181f] overflow-y-auto gap-3">
+    <div class="w-full flex justify-center items-center py-3 bg-[#4a74e8]">
+        <span class="font-bold text-lg text-white">Asistin</span>
     </div>
-    <div class="w-full">
-        <span class="text-gray-900 text-md font-semibold">Materias Disponibles:</span>
-    </div>
-    <div class="w-full flex flex-col items-center overflow-y-auto gap-3">
-        <div class="w-full flex flex-col justify-center min-h-[50px] max-h-[80px] bg-white rounded-md p-2 text-gray-900 drop-shadow-md hover:bg-[#f0f0f0] border border-2 border-[#666666] cursor-pointer"
-            *ngFor="let materia of materias"
-            (click)="verMateria(materia.idMateria)"
-            >
-            <span>Materia: {{materia.nombre}}</span>
-            <span>Horario: {{materia.horario}}</span>
-            <span>Curso: {{materia.curso}}</span>
+    <div class="w-full h-full flex flex-col items-center overflow-y-auto gap-3 px-3 ">
+        <div class="w-full flex flex-col justify-center min-h-[50px] bg-white rounded-md p-2 gap-2 text-gray-900 drop-shadow-lg hover:bg-[#f0f0f0] cursor-pointer"
+            *ngFor="let materia of materias">
+            <div class="w-full flex">
+                <div class="w-1/2">
+                    <span class="font-semibold">{{materia?.subject?.name}}</span>
+                </div>
+                <div class="w-1/2 text-end">
+                    <span class="font-semibold">{{materia?.startTime}} - {{materia?.endTime}}</span>
+                </div>
+            </div>
+            <div class="w-full">
+                <span class="text-sm">{{materia?.subject?.description}}</span>
+            </div>
+            <div class="w-full flex justify-end items-center">
+                <ion-button size="small" class="btn-ver" (click)="verMateria(materia.id)">Ver</ion-button>
+            </div>
         </div>
     </div>
 </div>
